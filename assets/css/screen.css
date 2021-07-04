@@ -222,7 +222,7 @@ section.recent-posts {
     right: 0px;
     width: 240px;
     top: 120px;
-    line-height: 1.8;
+    line-height: 2;
 
     overflow-y: auto;
     overflow-x: visible;
@@ -259,7 +259,7 @@ a.toc-active {
     font-weight: bold;
     transition: all 0.125s ease-in 0s;
     font-size: 0.75rem;
-    color: #9075aa;
+    color: #00ab6b;
 }
 
 .toc ul {
@@ -269,6 +269,7 @@ a.toc-active {
 }
 
 .toc ul li {
+    list-style-type: none;
     padding-left: .5rem;
 }
 
