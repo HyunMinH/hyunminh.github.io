@@ -1,6 +1,7 @@
 ---
 layout : post
 title : "학습테스트로 프레임워크, 라이브러리, API를 학습해보자"
+image : assets/img/testing.jpg
 ---
 
 ## 학습 테스트란? 

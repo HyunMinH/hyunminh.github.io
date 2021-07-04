@@ -1,6 +1,7 @@
 ---
 layout : post
 title : "BeanDefinition과 어노테이션 (feat. IoC 컨테이너)"
+image : https://images.velog.io/images/hyunmin/post/1767f0c2-837c-4129-8715-9f58690ba9a6/velog.002.jpeg
 ---
 
 ## 글을 들어가기 전

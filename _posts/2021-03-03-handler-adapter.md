@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "DispatcherServlet은 어떤 타입의 오브젝트라도 컨트롤러로 사용할 수 있다고?"
+image : https://images.velog.io/images/hyunmin/post/3c9bada1-ca18-40f1-a124-1952a2db73c7/velog.001.jpeg
 ---
 
 ## 어댑터 패턴

@@ -1,6 +1,7 @@
 ---
 layout : post
 title : "@MVC는 어떻게 HttpRequest에서 원하는 형태로 데이터를 전달받아 사용할 수 있을까?"
+image : assets/img/http-request-response.png
 ---
 
 # 도입

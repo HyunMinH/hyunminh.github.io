@@ -1,6 +1,7 @@
 ---
 layout : post
 title : "DispatcherServlet 의 Default 전략"
+image : assets/img/default-strategies.png
 ---
 
 # 도입

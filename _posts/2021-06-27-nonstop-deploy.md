@@ -1,6 +1,7 @@
 ---
 layout : post
 title : "기존 프로젝트를 무중단 배포로 바꿔보자! (via jenkins)"
+image : assets/img/nonstop-deploy/architecture2.png
 ---
 
 # 도입
