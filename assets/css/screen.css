@@ -255,7 +255,7 @@ section.recent-posts {
     }
 }
 
-a.toc-active {
+.toc a.toc-active {
     font-weight: bold;
     transition: all 0.125s ease-in 0s;
     font-size: 0.75rem;
