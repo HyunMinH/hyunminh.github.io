@@ -217,8 +217,6 @@ https://search.google.com/structured-data/testing-tool/u/0/
     var before = undefined;
 
     document.addEventListener('scroll', function(e) {
-        log.info("scrolling");
-
         if (window.scrollY >= articleY-60) {
             toc.style.cssText = "position: fixed; top: 60px;";
         }
