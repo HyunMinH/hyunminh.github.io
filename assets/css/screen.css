@@ -215,9 +215,65 @@ section.recent-posts {
     font-size: 0.95rem;
 }
 
-.toc ul {
-    list-style: decimal;
-    font-weight: 400;
+
+
+.toc {
+    position: absolute;
+    right: 0px;
+    width: 240px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    margin-right: 0px;
+    font-size: 0.7rem;
+    border-left: 2px solid #e0d9e7;
+
+    display: none;
+}
+
+@media (min-width: 75em){
+    .toc {
+        width: 240px;
+        display: block;
+    }
+}
+@media (min-width: 85em){
+    .toc {
+        width: 300px;
+        display: block;
+    }
+}
+@media (min-width: 95em){
+    .toc {
+        width: 360px;
+        display: block;
+    }
+}
+
+a.toc-active {
+    font-weight: bold;
+    transition: all 0.125s ease-in 0s;
+    font-size: 0.75rem;
+    color: #9075aa;
+}
+
+toc ul {
+    list-style-type: none;
+    margin-bottom: 0.1rem;
+    padding-left: 0rem;
+}
+
+toc ul li {
+    padding-left: .5rem;
+}
+
+
+toc a {
+    text-decoration: none;
 }
 
 .author-meta {
