@@ -4,7 +4,9 @@ title : "학습테스트로 프레임워크, 라이브러리, API를 학습해�
 image : assets/img/testing.jpg
 ---
 
-## 학습 테스트란? 
+# 학습 테스트란? 
+
+---
 
 >자신이 만들지 않은 프레임워크나 라이브러리 등에 대해 작성하는 테스트다.
 
@@ -15,9 +17,11 @@ image : assets/img/testing.jpg
 3. 프레임워크나 라이브러리의 버전이 바뀔 때, 그에 대한 검증 가능.
 4. 새로운 기술을 배우는 것이 즐거워진다.
 
-## 토비의 스프링의 예
+# 토비의 스프링의 예
 
-### Junit
+---
+
+## Junit
 
 >Junit은 Unit Test 도구다.
 
@@ -112,7 +116,8 @@ assertTrue(testObjects.contains(this));
 이제 테스트를 실행해보자.
 ![](https://images.velog.io/images/hyunmin/post/d6083c54-41b3-49b4-bb8d-68ff30eb8db4/image.png)성공이다.
 
-### Context
+## Context
+
 이번에는 스프링을 테스트해보자.
 컨텍스트는 무조건 한개만 생성되는지 확인해보자.
 
@@ -199,13 +204,17 @@ assertTrue(contexts.contains(this.context));
 
 
 
-## 심심이 API
+# 심심이 API
+
+---
+
 학교에서 하는 팀프로젝트에서 여러가지 프로젝트 주제 아이디어가 나왔었다.
 이 중에 심심이 API를 사용하는 아이디어가 있었다.
 
 학습테스트를 통해 심심이 API이 어떤건지 학습해보자.
 
 ##  API 발급하기
+
 사이트는 [SimSimi Workshop](https://workshop.simsimi.com/) 로 들어가면 된다.
 
 회원가입하는 방법은 간단하다.
@@ -221,7 +230,7 @@ assertTrue(contexts.contains(this.context));
 
 그러면 이제 간단하게 살펴본 후 테스트 해보자.
 
-### 일상 대화 API
+## 일상 대화 API
 
 이미 심심이 API에는 1억 건 이상의 일상대화 전용 대화세트들이 있으며,
 일상 대화 API를 이용하면 이 대화세트들에서 데이터를 얻을 수 있게 된다.
@@ -233,7 +242,7 @@ assertTrue(contexts.contains(this.context));
 전체적인 흐름은 다음 그림과 같다.
 ![](https://images.velog.io/images/hyunmin/post/e6e56079-39ba-4012-b6a1-a46b46694acd/image.png)
 
-### 가르치기 API
+## 가르치기 API
 
 가르치기 API를 이용하면 `질문-대답`세트를 저장할 수 있다.
 
@@ -249,7 +258,7 @@ assertTrue(contexts.contains(this.context));
 
 그렇다면 이제 테스트를 해보자.
 
-### 학습 테스트 코드 작성
+## 학습 테스트 코드 작성
 테스트 하고 싶은 내용은 총 3가지이다.
 
 1. 일상대화 API를 통해 제대로 가져오는지.
@@ -258,7 +267,7 @@ assertTrue(contexts.contains(this.context));
 
 차근차근 수행해보자.
 
-### 일상대화 API 테스트 코드
+## 일상대화 API 테스트 코드
 
 먼저 요청 예시를 살펴보자.
 ```
@@ -403,7 +412,7 @@ public void testTalkAPI(){
 ![](https://images.velog.io/images/hyunmin/post/d85bdf01-290c-4c96-8d46-3645c36e6447/image.png)성공!
 
 
-### 가르치기 API 
+## 가르치기 API 
 
 이제 남은 2가지를 테스트해보자.
 
@@ -499,7 +508,9 @@ assertFalse(resultTalkAfterTeachJson1.get("atext")
 이제 테스트를 돌려보자.
 ![](https://images.velog.io/images/hyunmin/post/de83d5b8-3145-4482-bea1-1214a9af97e8/image.png)성공이다.
 
-## 글을 마치며
+# 글을 마치며
+
+---
 
 이번에는 학습테스트에 대해 공부해보았다.
 

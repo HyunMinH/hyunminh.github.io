@@ -1,10 +1,11 @@
 ---
 layout : post
-title : "@MVC는 어떻게 HttpRequest에서 원하는 형태로 데이터를 전달받아 사용할 수 있을까?"
+title : "@MVC는 HttpRequest에서 어떻게 원하는 형태로 데이터를 전달받아 사용할 수 있을까?"
 image : assets/img/http-request-response.png
 ---
 
 # 도입
+
 ---
 
 어노테이션을 활용한 컨트롤러를 작성하다보면 우리가 만든 Entity, Dto 나 int, bool, String 타입등으로 파라미터를 받아본 적이 있을 것이다.
@@ -16,6 +17,7 @@ image : assets/img/http-request-response.png
 즉, 스프링이 중간에서 해당 타입으로 바꿔주는 것인데, 이를 어떻게 하는지 알아보자.
 
 # 메소드 파라미터 종류
+
 --- 
 
 @RequestMapping의 메소드에 사용할 수 있는  파라미터의 종류들을 메소드 파라미터라고 한다. 
