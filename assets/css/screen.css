@@ -226,13 +226,14 @@ section.recent-posts {
 
     overflow-y: auto;
     overflow-x: visible;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
     margin-right: 0px;
-    font-size: 0.7rem;
+    border-left: 1px solid #e0d9e7;
 
+    font-size: 0.6rem;
     display: none;
 }
 
@@ -258,7 +259,7 @@ section.recent-posts {
 .toc a.toc-active {
     font-weight: bold;
     transition: all 0.125s ease-in 0s;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: #00ab6b;
 }
 
@@ -270,7 +271,7 @@ section.recent-posts {
 
 .toc ul li {
     list-style-type: none;
-    padding-left: .5rem;
+    padding-left: .8rem;
 }
 
 
