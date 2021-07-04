@@ -218,19 +218,20 @@ section.recent-posts {
 
 
 .toc {
-    position: absolute;
+    position: fixed;
     right: 0px;
     width: 240px;
+    top: 120px;
+    line-height: 1.8;
 
     overflow-y: auto;
-    overflow-x: hidden;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    overflow-x: visible;
+    padding-left: 1rem;
+    padding-right: 1rem;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
     margin-right: 0px;
     font-size: 0.7rem;
-    border-left: 2px solid #e0d9e7;
 
     display: none;
 }
@@ -261,19 +262,24 @@ a.toc-active {
     color: #9075aa;
 }
 
-toc ul {
+.toc ul {
     list-style-type: none;
     margin-bottom: 0.1rem;
     padding-left: 0rem;
 }
 
-toc ul li {
+.toc ul li {
     padding-left: .5rem;
 }
 
 
-toc a {
+.toc a {
     text-decoration: none;
+    color : gray
+}
+
+.toc a:hover{
+    color: #00ab6b;
 }
 
 .author-meta {

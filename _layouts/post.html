@@ -65,7 +65,6 @@ post_class: post-template
             <div class="article-post">
                 <!-- always toc -->
                 <div class="toc">
-                    <a href="#">&lt;맨 위로&gt;</a>
                     {% include toc.html html=content %}
                 </div>
 
@@ -218,6 +217,8 @@ https://search.google.com/structured-data/testing-tool/u/0/
     var before = undefined;
 
     document.addEventListener('scroll', function(e) {
+        log.info("scrolling");
+
         if (window.scrollY >= articleY-60) {
             toc.style.cssText = "position: fixed; top: 60px;";
         }
