@@ -160,7 +160,7 @@ public enum ErrorCode {
 > 작성한 예외 클래스에 `@ResponseStatus` 를 붙여서 처리할 수 있는 방법이다.
 > 하지만 일괄적인 처리와 최대한 표준예외를 활용할 예정이므로 `ExceptionHandlerExceptionResolver`를 활용하자.
 
-> default 전략에 대해서는 [DispatcherServlet 의 Default 전략](_posts/2021-06-01-default-strategies.md) 를 참고하기 바란다.
+> default 전략에 대해서는 [DispatcherServlet 의 Default 전략](default-strategies) 를 참고하기 바란다.
 
 ## @ControllerAdvice
 
@@ -259,7 +259,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
-`GlobalExceptionHandler` 클래스에는 `@ControllerAdvice`가 붙여져 있고, `ExceptionHandler`가 메서드 마다 붙여져 있다. 
+`GlobalExceptionHandler` 클래스에는 `@ControllerAdvice`가 붙여져 있고, `@ExceptionHandler`가 메서드 마다 붙여져 있다. 
 
 컨트롤러에서 예외가 발생하면 `@ExceptionHanlder`에 인자로 주어진 예외 클래스에 매칭되는지 확인하고, 메서드를 실행하게 된다.
 
@@ -270,15 +270,15 @@ public class GlobalExceptionHandler {
 아래는 `IllegalArgumentException` 을 처리하는 메서드이다.
 
 ```java
-    /**
-     * 비즈니스 로직 수행 도중, 해당 도메인 객체의 상태가 로직을 수행할 수 없을 때 발생
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e){
-        log.error("illegalArgumentException", e);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.ILLEGAL_ARGUMENT, e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+/**
+ * 비즈니스 로직 수행 도중, 해당 도메인 객체의 상태가 로직을 수행할 수 없을 때 발생₩
+ */
+@ExceptionHandler(IllegalArgumentException.class)
+protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e){
+    log.error("illegalArgumentException", e);
+    final ErrorResponse response = ErrorResponse.of(ErrorCode.ILLEGAL_ARGUMENT, e.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+}
 ```
 
 여기서 총 3가지를 작업을 수행한다.
@@ -293,7 +293,7 @@ public class GlobalExceptionHandler {
 
 > 우리는 API에 총 2가지의 검증을 적용 할 것이다. 
 > 사용자 요청 형식 검증과 비즈니스 로직 검증이다.
-> 이 검증들은 예외를 던지고 이를 위에서 작성한 GlobalExceptionHandler가 처리한다.
+> 이 검증들은 실패 시 예외를 던지게 되고, 이를 위에서 작성한 `GlobalExceptionHandler`가 처리한다.
 
 사용자 요청에 대한 형식 검증은 총 2가지 단계로 이루어진다.
 
@@ -320,7 +320,7 @@ public interface Validator{
 
 이를 구현한 클래스의 예는 다음과 같다. 
 
-직접 사용할 것도 아니니 간단하게 이렇게 구현한다는 것만 알면 된다.
+직접 사용할 것도 아니니 이렇게 구현한다는 것만 알면 된다.
 
 ```java
 public class UserValidator implements Validator{
@@ -337,13 +337,13 @@ public class UserValidator implements Validator{
 }
 ```
 
-이렇게 우리는 `Validator` 의 구현 클래스를 작성해 보았다.
+이렇게 우리는 `Validator` 의 구현 클래스를 알아 보았다.
 
 하지만 모든 사용자의 요청 타입에 대해 `Validator` 구현 클래스를 작성하는 것은 쉽지 않은 일이므로, `JSR-303`의 빈 검증 기능을 사용하자.
 
-`JSR-303`은 오브젝트의 필드에 제약조건 어노테이션을 붙여 `Validator`처럼 검증을 진행할 수 해준다.
+`JSR-303`은 오브젝트의 필드에 제약조건 어노테이션을 붙여 `Validator`처럼 검증을 진행할 수 있게 해준다.
 
-> 정확히는 어댑터 역할을 하는 LocalValidatorFactoryBean을 통해
+> 정확히는 어댑터 역할을 하는 LocalValidatorFactoryBean이
 > JSR-303의 검증 기능을 스프링의 Validator처럼 사용할 수 있도록 해준다.
 
 그러면 이를 활용한 예를 살펴보자.
@@ -371,7 +371,7 @@ public class User{
 
 `Validator`를 적용하는 방법은 2가지가 있다.
 
-1. 앞서 구현한 `Validator`의 `validate()`메서드를 호출하여 검증
+1. `Validator`인터페이스를 구현한 클래스의 `validate()`메서드를 호출하여 검증
 
 2. `@Valid` 어노테이션을 파라미터 앞에 붙여 적용
 
@@ -482,11 +482,11 @@ class UserApiTest {
 
 400 status code와 ErrorResponse 형태로 Body를 반환한다.
 
-![](../assets/img/exception-handling/bindtest-fail.png)
+![](../assets/img/exception-handling/bind-test-fail.png)
 
 test case gildong의 경우는 성공함을 볼 수 있다.
 
-![](../assets/img/exception-handling/bindtest-success.png)
+![](../assets/img/exception-handling/bind-test-success.png)
 
 # Business Logic 검증
 
@@ -525,7 +525,7 @@ public class Borrow {
 
 ## 여러 개의 도메인 객체들이 함께 동작하는 비즈니스 로직
 
-이번에는 여러개의 도메인 객체들이 동작하는 대여에 대해서 한 번 예외 처리를 해보겠다.
+이번에는 여러개의 도메인 객체들이 필요한 대여에 대해서 한 번 예외 처리를 해보겠다.
 
 대여를 생성하는 메서드는 아래와 같다. 
 
@@ -550,7 +550,7 @@ public class Borrow {
 
 1. 도메인에 대한 정보를 서비스 레이어에서 알아야 하기 때문에, 도메인 레이어와 강하게 결합된다.
 
-2. 서비스 레이어의 책임에 검증까지 같이 들어가기 때문에, 응집도가 떨어지게 된다.
+2. 서비스 레이어의 책임에 검증이 추가 되기 때문에, 응집도가 떨어지게 된다.
 
 위 두가지 이유로 `BorrowValidator` 클래스를 만들어 검증 로직을 넣었다.
 
@@ -596,9 +596,7 @@ public class BorrowValidator {
 
 특히 아직 도메인 주도 설계나 객체지향에 대한 지식이 부족하여 비즈니스 로직 처리에 대해 어떻게 하는 것이 더 좋은가 많이 고민하게 된다.
 
-계속 공부해가며 더 좋은 방식으로 비즈니스 로직에 대한 예외 처리를 할 수 있다고 판단이 들면
-
-포스팅을 수정 또는 새로운 포스트로 작성 해야겠다.
+계속 공부해가며 더 좋은 방식으로 비즈니스 로직에 대한 예외 처리를 할 수 있다고 판단이 들면 포스팅을 수정 또는 새로운 포스트로 작성 해야겠다.
 
 
 # 참조
