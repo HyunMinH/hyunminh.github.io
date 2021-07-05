@@ -160,7 +160,7 @@ public enum ErrorCode {
 > 작성한 예외 클래스에 `@ResponseStatus` 를 붙여서 처리할 수 있는 방법이다.
 > 하지만 일괄적인 처리와 최대한 표준예외를 활용할 예정이므로 `ExceptionHandlerExceptionResolver`를 활용하자.
 
-> default 전략에 대해서는 [DispatcherServlet 의 Default 전략]({% post_url 2021-06-01-default-strategies %}) 를 참고하기 바란다.
+> default 전략에 대해서는 [DispatcherServlet 의 Default 전략]({% post_url 2021-06-01-default-strategies.md %}) 를 참고하기 바란다.
 
 ## @ControllerAdvice
 
