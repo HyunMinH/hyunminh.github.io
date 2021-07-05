@@ -12,16 +12,14 @@ image : assets/img/exception-handling/response.png
 
 이 때 어떻게 예외처리를 처리할지 고민을 많이 하였고, github에서 마침 좋은 내용을 발견하여 적용하였다.
 
-서버 코드의 리팩토링 과정에서 몇 가지 보완하고 싶은 점이 있어서 
-
-앞서 경험한 예외 핸들링한 과정과 좀 더 객체지향적으로 예외를 처리해보겠다. 
+이 때 예외를 핸들링한 경험을 포스팅 해보려 한다. 
 
 # Exception Handler 작성
 
 ---
 
-> 예외 발생 시 Response Body를 특정한 형태의 객체 타입으로 하고
-> 예외에 따라 지정한 status code를 함께 반환하는 클래스를 작성해보자.
+> 예외 발생 시 Response Body를 특정한 형태의 객체 타입으로
+> 미리 지정한 status code를 함께 반환하는 클래스를 작성해보자.
 
 ## ErrorResponse
 
@@ -128,10 +126,6 @@ public enum ErrorCode {
     ILLEGAL_STATE(400, "STANDARD_001", "illegal state"),
     ILLEGAL_ARGUMENT(400, "STANDARD_002", "illegal argument"),
 
-    // Member
-    EMAIL_DUPLICATION(400, "USER_001", "Email is Duplication"),
-    LOGIN_INPUT_INVALID(400, "USER_002", "Login input is invalid"),
-
     // Exception
     EXCEPTION(500, "EXCEPTION", "exception");
 
@@ -160,13 +154,13 @@ public enum ErrorCode {
 
 `@ExceptionHandler` 어노테이션은 Controller 또는 ControllerAdvice 에 붙일 수 있다. 
 
-우리는 ControllerAdvice에 `@ExceptionHandler`를 적용하여 모든 컨트롤러에서 발생하는 예외에 대해 공통적으로 처리할 수 있게 할 것이다.
+우리는 ControllerAdvice에 `@ExceptionHandler`를 적용하여 모든 컨트롤러에서 발생하는 예외에 대해 공통적으로 공통적으로 처리할 것이다.
 
 > `ResponseStatusExceptionResolver`라는 전략을 이용하는 방법도 있다. 
 > 작성한 예외 클래스에 `@ResponseStatus` 를 붙여서 처리할 수 있는 방법이다.
 > 하지만 일괄적인 처리와 최대한 표준예외를 활용할 예정이므로 `ExceptionHandlerExceptionResolver`를 활용하자.
 
-> default 전략에 대해서는 [DispatcherServlet 의 Default 전략](./2021-06-01-default-strategies.md) 를 참고하기 바란다.
+> default 전략에 대해서는 [DispatcherServlet 의 Default 전략](_posts/2021-06-01-default-strategies.md) 를 참고하기 바란다.
 
 ## @ControllerAdvice
 
