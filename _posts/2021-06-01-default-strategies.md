@@ -92,7 +92,7 @@ org.springframework.web.servlet.FlashMapManager=org.springframework.web.servlet.
 
 > DispatcherServlet이 Multipart Request 를 받았을 때, 
 > MultipartHttpServletRequest 인터페이스를 호출할 수 있도록 Wrapped 된 HttpServletRequest 를 만들어주는 전략
- 
+
 > MultipartHttpServletRequest 의 인터페이스를 통해 MultipartFile 을 가져올 수 있다.
 
 스프링은 `MultipartResolver` 는 따로 디폴트 설정을 하지 않는다. 
