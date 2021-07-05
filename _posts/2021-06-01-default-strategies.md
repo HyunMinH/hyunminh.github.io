@@ -159,11 +159,11 @@ public String handleRequest(@RequestParam("file") MultipartFile multipartFile) {
 
 `RequestMappingHandlerAdapter`는 `@RequestMapping` 어노테이션이 붙은 컨트롤러를 지원하는 어댑터이다.
 
-> RequestMappingHandlerAdapter가 어떤 파라미터를 어떻게 지원하는지는 [@MVC는 HttpRequest에서 어떻게 원하는 형태로 데이터를 전달받아 사용할 수 있을까?]({% post_url 2021-05-30-method-parameter-binding.md %}) 를 참고하기 바랍니다.
+> RequestMappingHandlerAdapter가 어떤 파라미터를 어떻게 지원하는지는 [@MVC는 HttpRequest에서 어떻게 원하는 형태로 데이터를 전달받아 사용할 수 있을까?]({% post_url 2021-05-30-method-parameter-binding %}) 를 참고하기 바랍니다.
 
 `HandlerFunctionAdapter`는 스프링 웹플럭스의 `HandlerFunctions`를 지원한다.
 
-> 핸들러 어댑터에 대해서는 이전에 작성한 [DispatcherServlet은 어떤 타입의 오브젝트라도 컨트롤러로 사용할 수 있다고?]({% post_url 2021-03-03-handler-adapter.md %}) 를 참고하기 바랍니다.
+> 핸들러 어댑터에 대해서는 이전에 작성한 [DispatcherServlet은 어떤 타입의 오브젝트라도 컨트롤러로 사용할 수 있다고?]({% post_url 2021-03-03-handler-adapter %}) 를 참고하기 바랍니다.
 
 # HandlerExceptionResolver
 
