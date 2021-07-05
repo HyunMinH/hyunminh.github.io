@@ -239,13 +239,13 @@ section.recent-posts {
 
 @media (min-width: 75em){
     .toc {
-        width: 240px;
+        width: 150px;
         display: block;
     }
 }
 @media (min-width: 85em){
     .toc {
-        width: 300px;
+        width: 210px;
         display: block;
     }
 }
