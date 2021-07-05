@@ -243,8 +243,11 @@ spring boot는 기본적으로 `@SpringBootApplication`이 붙은 클래스의 �
 
 이제 @MVC로 가보자.
 
-> 참조
-> 토비의 스프링
-> 오브젝트
-> docs.spring.io
-> [java - Difference between register() and @ComponentScan - Stack Overflow](https://stackoverflow.com/questions/62512172/difference-between-register-and-componentscan)
+# 참조
+
+---
+
+* 토비의 스프링
+* 오브젝트
+* docs.spring.io
+* [java - Difference between register() and @ComponentScan - Stack Overflow](https://stackoverflow.com/questions/62512172/difference-between-register-and-componentscan)

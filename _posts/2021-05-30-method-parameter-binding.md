@@ -305,7 +305,7 @@ public void initBinder(WebDataBinder dataBinder){
 
 ```java
 public interface Converter<S, T>{
-	T convert(S source)
+	T convert(S source);
 }
 ```
 
@@ -391,7 +391,9 @@ User의 UserType 처럼 모델(User)에서 자주 사용되는 타입이라면 `
 
 또한 이럴때는 `WebBindingInitializer`를 통해 모든 컨트롤러에 적용하는 것보다는 @InitBinder를 통해 특정 클래스에만 적용하는 것이 좋다.
 
-## 글을 마치며
+# 글을 마치며
+
+---
 
 이번에는 HttpRequest로부터 어떻게 @Controller의 메소드의 파라미터로 바인딩 되는지 알아보았다.
 
@@ -404,4 +406,8 @@ Spring은 @Controller에 지원하는 파라미터들이 있으며,
 
 다음에는 Validation과 ControllerAdvice를 함께 다뤄봐야겠다.
 
-> 참조 : 토비의 스프링 3.1
+# 참조
+
+---
+
+* 토비의 스프링 3.1

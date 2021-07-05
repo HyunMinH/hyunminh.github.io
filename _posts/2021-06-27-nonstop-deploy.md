@@ -681,5 +681,11 @@ pull request로 코드를 작성하여 merge 해보자.
 
 ![](../assets/img/nonstop-deploy/noti3.png)
 
-> 참조 : https://jojoldu.tistory.com/267, https://goddaehee.tistory.com/258
+# 참조
+
+---
+
+* https://jojoldu.tistory.com/267
+  
+* https://goddaehee.tistory.com/258
 

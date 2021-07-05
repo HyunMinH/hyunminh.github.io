@@ -519,6 +519,10 @@ assertFalse(resultTalkAfterTeachJson1.get("atext")
 마침 테스팅 수업도 듣고 있고, 테스트가 중요하다고 생각하고 있기 때문에
 앞으로 이어질 포스트에 가능하면 테스트 코드 작성을 통해 학습을 하려 한다.
 
-> 참조
-> 토비의 스프링(이일민 저)
-> [문서 | SimSimi Workshop](https://workshop.simsimi.com/document)
+# 참조
+
+---
+
+* 토비의 스프링 3.1
+
+* [문서 | SimSimi Workshop](https://workshop.simsimi.com/document)
