@@ -16,9 +16,9 @@ image : assets/img/controller-response/spring-mvc.png
 
 위 그림에서 3번부터 7번까지 간략히 무엇을 하는지 알아보자.
 
-3. 컨트롤러가 모델에 정보를 이름과 오브젝트 값의 쌍으로 넣는다.
+3. (3) 컨트롤러가 모델에 정보를 이름과 오브젝트 값의 쌍으로 넣는다.
 
-4. 뷰를 생성하거나 뷰의 이름을 `ModelAndView`에 모델과 함께 넣어 반환한다. 
+4. (4) 뷰를 생성하거나 뷰의 이름을 `ModelAndView`에 모델과 함께 넣어 반환한다. 
    
    * 뷰의 이름을 반환하면 `DispatcherServlet`의 `ViewResolver`가 알아서 해당 뷰 오브젝트를 생성해준다.
    
@@ -27,13 +27,13 @@ image : assets/img/controller-response/spring-mvc.png
     
    * View 대신 메시지 컨버터를 사용하면 반환하는 값을 바로 HTTP 응답 바디로 다룰 수 있다.
    
-5. 뷰 오브젝트에 모델을 전달해주고 최종 결과물을 생성해달라고 요청한다.
+5. (5) 뷰 오브젝트에 모델을 전달해주고 최종 결과물을 생성해달라고 요청한다.
 
-6. 뷰는 모델을 참조해서 결과물을 `HttpServletResponse` 형태로 반환한다.
+6. (6) 뷰는 모델을 참조해서 결과물을 `HttpServletResponse` 형태로 반환한다.
 
    * 예로 JstlView는 모델과 컨트롤러가 돌려준 JSP 뷰 템플릿의 이름을 가져다 HTML을 생성한다.
    
-7. `DispatcherServlet`은 등록된 후처리기가 있으면 진행한 후, `HttpServletResponse`를 컨테이너에 넘긴다. 
+7. (7) `DispatcherServlet`은 등록된 후처리기가 있으면 진행한 후, `HttpServletResponse`를 컨테이너에 넘긴다. 
     컨테이너는 이를 HTTP 응답으로 클라이언트에 전송한다.
 
 아래부터는 응답 결과를 만들어주는 `View`, `ViewResolver`, `MessageConverter`에 대해 간단히 알아보자.
