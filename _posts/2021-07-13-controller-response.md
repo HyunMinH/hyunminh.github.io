@@ -31,8 +31,6 @@ image : assets/img/controller-response/spring-mvc.png
 
 6. (6) 뷰는 모델을 참조해서 결과물을 `HttpServletResponse` 형태로 반환한다.
 
-   * 예로 JstlView는 모델과 컨트롤러가 돌려준 JSP 뷰 템플릿의 이름을 가져다 HTML을 생성한다.
-   
 7. (7) `DispatcherServlet`은 등록된 후처리기가 있으면 진행한 후, `HttpServletResponse`를 컨테이너에 넘긴다. 
     컨테이너는 이를 HTTP 응답으로 클라이언트에 전송한다.
 
@@ -61,6 +59,8 @@ public interface View{
 
 > JstlView는 InternalResourceView의 서브 클래스로 지역화된 메시지를 JSP 뷰에서 사용할 수 있는 등 추가 기능을 활용할 수 있다.
 
+`InternalResourceView`나 `JstlView`를 직접 생성할 수도 있지만
+
 뷰 리졸버를 사용한다면 아래와 같이 JSP 파일의 위치를 나타내는 논리적인 뷰 이름만 넘겨주면 된다.
 
 ```java
@@ -74,7 +74,7 @@ return new ModelAndView("/WEB-INF/view/hello.jsp", model);
 
 > 모델의 모든 오브젝트를 JSON으로 변환해주는 뷰
 
-이 뷰를 직접 사용하기 보다 메시지 컨버터를 사용해 생성하는 방법이 편하다.
+이 뷰를 직접 사용하기 보다 메시지 컨버터를 사용하는 방법이 편하다.
 
 ### RedirectView
 
@@ -113,20 +113,20 @@ return new ModelAndVide("redirect:main");
 
 JSP를 뷰로 사용할 때 쓰이며, prefix, suffix를 지정할 수 있다.
 
-이 외에도 템플릿 엔진인 `Thymeleaf`를 지원하는 뷰 리졸버 등 여러 뷰 리졸버들이 있다. 
+`InternalResourceViewResolver` 외에도 템플릿 엔진인 `Thymeleaf`를 지원하는 뷰 리졸버 등 여러 뷰 리졸버들이 있다. 
 
 어떤 뷰 타입을 사용하려 할때, 지원하는 뷰 리졸버의 사용법을 찾아 사용해보자. 
 
 # 메시지 컨버터
 
-> 모델 오브젝트를 다시 뷰를 이요해 클라이언트로 보낼 콘텐트로 만드는 대신, 
+> 모델 오브젝트를 다시 뷰를 이용해 클라이언트로 보낼 콘텐트로 만드는 대신, 
 > HTTP 요청 메시지 본문과 HTTP 응답 메시지 본문을 통째로 메시지를 다루는 방식.
 
 메시지 컨버터는 요청 메시지를 파라미터에 바인딩하거나, 오브젝트를 응답 메시지로 바인딩할 때 쓰인다. 
 
 이번 주제는 컨트롤러의 return할 때 무슨 일이 일어나는지 보는 것이므로 후자를 살펴보자.
 
-> 전자는 앞서 작성한 [@MVC는 HttpRequest에서 어떻게 원하는 형태로 데이터를 전달받아 사용할 수 있을까?]({% post_url 2021-05-30-method-parameter-binding %})
+> 파라미터 바인딩에 알고 싶다면 [@MVC는 HttpRequest에서 어떻게 원하는 형태로 데이터를 전달받아 사용할 수 있을까?]({% post_url 2021-05-30-method-parameter-binding %})
 > 을 참고하길 바란다. 
 
 메시지 컨버터를 사용할 때는 `@ResponseBody` 어노테이션을 핸들러 메서드에 위에 붙여서 사용할 수 있다.
@@ -141,6 +141,8 @@ JSP를 뷰로 사용할 때 쓰이며, prefix, suffix를 지정할 수 있다.
 > 지원 미디어 타입은 application/json이다.
 
 만약 다음과 같이 반환하게 되면 `User`가 그대로 HttpResponse Body에 Json 형식으로 담기게 된다.
+
+참고로, `MappingJacksonHttpMessageConverter`는 디폴트 메시지 컨버터이므로 따로 등록해줄 필요가 없다.
 
 ```java
 @RequestMapping("/api/hello")
