@@ -1,7 +1,7 @@
 ---
 layout : post
 title : "테스트 커버리지 100% 향해서"
-image : assets/img/test-coverage/test-coverage-100%.png
+image : assets/img/test-coverage/test-coverage-100.png
 ---
 
 # 도입
@@ -770,7 +770,7 @@ class BorrowRepositoryTest {
 
 현재는 borrow 패키지만 100% 달성하였으나, 조금씩 시간을 투자하여 모두 100%를 달성할 수 있도록 해야겠다.
 
-![](../assets/img/test-coverage/test-coverage-100%25.png)
+![](../assets/img/test-coverage/test-coverage-100.png)
 
 # 참조
 
