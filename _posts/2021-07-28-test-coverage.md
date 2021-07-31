@@ -24,7 +24,7 @@ image : assets/img/test-coverage/test-coverage-100.png
 
 API의 반환타입이 바뀌거나 하면 또 매번 해줘야하며, session을 통해 구축하는 거면 로그인까지 해줘야하는 문제점이 있었다.
 
-따라서 학교 프로젝트의 서버에 test code를 추가하여 Branch 기준으로 100% 달성하려고 한다.
+따라서 학교 프로젝트의 서버에 test code를 추가하여 LINE 기준으로 100% 달성하려고 한다.
 
 이는 추후 몇가지 기능을 더 추가할 때 매우 큰 도움이 될 것이다.
 
