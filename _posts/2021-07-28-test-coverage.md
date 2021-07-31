@@ -14,7 +14,7 @@ image : assets/img/test-coverage/test-coverage-100.png
 
 테스팅에 관한 여러 개념들을 많이 배울 수 있었고 여러 유용한 점도 많이 알 수 있었다.
 
-특히 커버리지라는 개념을 배우고 나서 토스 컨퍼런스인 slash 21에서 이 주제로 발표를 한 것을 보았다.
+특히 커버리지라는 개념을 배우고 나서 토스 컨퍼런스인 `slash 21`에서 이 주제로 발표를 한 것을 보았다.
 
 인스트럭션 커버리지 100% 기준을 달성하기 위해 여러 이슈들을 어떻게 해결했는지 알려주는 좋은 발표였다.
 
@@ -24,7 +24,7 @@ image : assets/img/test-coverage/test-coverage-100.png
 
 API의 반환타입이 바뀌거나 하면 또 매번 해줘야하며, session을 통해 구축하는 거면 로그인까지 해줘야하는 문제점이 있었다.
 
-따라서 학교 프로젝트의 서버에 test code를 추가하여 LINE 기준으로 100% 달성하려고 한다.
+따라서 학교 프로젝트의 서버에 test code를 추가하여 `LINE` 기준으로 `100%` 달성하려고 한다.
 
 이는 추후 몇가지 기능을 더 추가할 때 매우 큰 도움이 될 것이다.
 
@@ -42,8 +42,17 @@ API의 반환타입이 바뀌거나 하면 또 매번 해줘야하며, session�
 
 테스트를 언제 얼마만큼 작성해야하는지 기준이 된다는 큰 장점이 있다.
 
-statement(line) coverage, decision(branch) coverage, condition/decision coverage, 
-modified condition/decision coverage 등등 여러 커버리지가 있지만 이 중에 2가지만 알아보자.
+다음과 같이 여러개의 coverage들이 있지만 위의 두 개만 알아보자.
+
+1. statement(line) coverage
+   
+2. decision(branch) coverage
+   
+3. condition/decision coverage 
+   
+4. modified condition/decision coverage
+
+5. ...
 
 ## line coverage
 
@@ -71,7 +80,7 @@ private void printNumber(int num){
 테스트 케이스들이 모든 분기문들의 조건식의 결과가 true, false를 한번이라도 충족하게 한다면, 
 branch coverage 100% 라고 할 수 있다.
 
-위의 예제에서 `num=11`이라는 테스트 케이스는 `num > 10` 가 true인 경우만 만족시키므로,
+위의 예제에서 `num=11`이라는 테스트 케이스는 `조건식 num > 10` 이 true인 경우만 만족시키므로,
 
 branch coverage 100% 달성하기 위해서는 `num=11`, `num=10` 이렇게 2가지의 테스트 케이스가 필요하다.
 
@@ -106,7 +115,7 @@ plugins {
 }
 ```
 
-그리고 test 커버리지 측정 리포트 설정은 다음과 같이 한다.
+그리고 아래와 같이 테스크를 추가해주자.
 
 ```
 jacocoTestReport{
@@ -117,7 +126,7 @@ jacocoTestReport{
    }
    
    // 아래 afterEvaluate 부분은 리포트를 보여줄 때, 제외하고 싶은 것을 의미한다.
-   // 현재 프로젝트에서 QueryDSL과 룸북의 Builder 어노테이션이 만들어주는 코드를 
+   // 현재 프로젝트에서 있는 QueryDSL과 룸북의 Builder 어노테이션이 만들어주는 코드를 
    // 테스트하는 것은 의미없으므로 제외해준다. 
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect{
@@ -134,15 +143,16 @@ jacocoTestReport{
 
 
 
-그리고 아래는 어떤 커버리지를 얼마만큼 달성할 것인지 나타내는 부분이다. 이를 추가해주자.
+그리고 아래는 어떤 커버리지를 얼마만큼 달성할 것인지 나타내는 테스크이다. 이를 추가해주자.
 
 ```
 jacocoTestCoverageVerification{
     violationRules{
         rule{
             element = 'CLASS'
-            // 위에서 제외해준 겉은 리포트를 표시할 때만 안보여주는 것이므로, 위에서 제외했어도 검증은 하게 된다.
-            // 검증도 안하려면 다음과 같이 작성해주자.
+            // 위에서 제외해준 것은 리포트를 표시할 때만 안보여주는 것이므로, 
+            // 위에서 제외했어도 검증은 하게 된다.
+            // 빌드 시 검증에 실패하게 되면 빌드가 되지 않으므로 다음과 같이 작성해주자.
             excludes = [
                     '**.aggregate.Q*',
                     '**.*Builder*',
@@ -187,7 +197,7 @@ intellij 를 이용하면 옆에 뜨는 웹브라우저 아이콘을 클릭해�
 
 그에 따라 초록색 게이지가 꽉 찬 것을 볼 수 있다.
 
-이제 어떻게 초록색 게이지를 모두 달성하는지 (라인 커버리지100% 달성) 경험을 써보겠다. 
+이제 어떻게 라인 커버리지 100%를 달성하는지 경험을 써보겠다. 
 
 # 기본 Rule
 
@@ -223,7 +233,7 @@ public void testReturnFailedWhenAlreadyReturned(){
 }
 ```
 
-내부의 좀 더 자세한 내용은 아래에서 포스팅 하겠다.
+너무 자세히 볼 필요는 없으며, 아래에서 `given - when - then`을 자세히 포스팅하겠다. 
 
 
 ## FIRST 규칙
@@ -236,7 +246,7 @@ public void testReturnFailedWhenAlreadyReturned(){
     
    * Mockito 라이브러리를 적극적으로 이용하자.
     
-   * 토스에서는 Mockito의 Mock 객체 생성시간까지 줄일 수 있도록 직접 Mock을 구현하였다. 
+   * 토스에서는 Mockito의 Mock 객체 생성시간까지 줄일 수 있도록 직접 Mock 객체를 구현하였다. 
    
 2. Independent: 각각의 테스트는 독립적이며 서로 의존해서는 안된다. 
 
@@ -253,7 +263,7 @@ public void testReturnFailedWhenAlreadyReturned(){
      
 4. Self-Validating: 테스트는 성공 또는 실패로 bool 값으로 결과를 내어 자체적으로 검증되어야 한다.
 
-   * Assertions의 assert 함수들을 `then`에서 호출하자.
+   * Assertions의 `assert` 함수들을 `then`에서 호출하자.
    
 5. Timely: 테스트는 적시에 즉, 테스트하려는 실제 코드를 구현하기 직전에 구현해야 한다
 
@@ -263,7 +273,7 @@ public void testReturnFailedWhenAlreadyReturned(){
 
 # Mock
 
-> 테스트하려는 클래스가 다른 특정 클래스에 의존하고 있을 때, 의존하는 클래스를 직접 사용하는 것이 아니라,
+> 테스트하려는 클래스가 다른 특정 클래스에 의존하고 있을 때, 의존하는 객체를 실제로 사용하는 것이 아니라,
 > 미리 지정한 행동을 하는 가짜 객체로 대체하여 사용한다.
 > 이 때 사용한 가짜 객체를 Mock 객체라고 한다.
 
@@ -287,7 +297,7 @@ class TestClass{
 
 ## stubbing
 
-> 어떤 메서드를 호출했을 때 미리 준비된 객체를 반환하는 것.
+> Mock 객체의 어떤 메서드를 호출했을 때 미리 준비된 객체를 반환하는 것.
 
 ```java
 doReturn(List.of(new User("honggildong"))).when(userRepository).getUsers();
@@ -305,7 +315,7 @@ doReturn(List.of(new User("honggildong"))).when(userRepository).getUsers();
 > 프리젠테이션 계층(컨트롤러) 는 사용자의 요청을 받아 응용 영역에 전달하고 
 > 응용 영역의 처리 결과를 사용자에게 전달하는 역할을 한다.
 
-즉 프리젠테이션에서 주의해서 테스트 해야하는 것은 다음과 같이 생각할 수 있다.
+즉 프리젠테이션 계층에서 확인해야하는 것은 다음과 같이 생각할 수 있다.
 
 1. 사용자의 요청을 정확하게 받았는지
 
@@ -394,12 +404,13 @@ class BorrowControllerTest{
 
 먼저 요청을 하기위한 Dto인 `BorrowRequest`와 `BorrowService`의 반환값으로 `borrow`를 준비하였다.
 
-그리고 컨트롤러가 서비스에게 제대로 데이터를 넘겼는지 확인하기 위해 `argThat(b -> b.getBorrowId == 1)`을 통해서 
-해당 값에 일치하는 요청이 들어왔을 때만 값을 반환하도록 하였다.
+그리고 컨트롤러가 서비스에게 제대로 데이터를 넘겼는지 확인하기 위해 
+
+`argThat(b -> b.getBorrowId == 1)`을 통해서 해당 값에 일치하는 요청이 들어왔을 때만 값을 반환하도록 하였다.
 
 ### when
 
-`MockMVC`를 통해 API 요청을 수행하였다. `/api/borrow` URL로 POST 요청을 하였으며, 타입은 JSON
+`MockMVC`를 통해 API 요청을 수행하였다. `/api/borrow`  URL로 POST 요청을 하였으며, 타입은 JSON
 그리고 미리 생성한 요청 Dto 객체를 `Gson`을 이용해 json으로 만들어 보내었다.
 
 ### then
@@ -481,7 +492,7 @@ class BorrowSearchServiceTest {
 
 `BorrowSerchService`의 `getMyBorrowings(int)` 함수를 호출하면 해당 사용자의 대여중인 목록을 반환해준다.
 
-그런데 해당 사용자가 없으면 실패하게 되어있는데, 이 경우를 `given-when-then`으로 알아보자.
+그리고 해당 사용자가 없으면 실패하게 되어있는데, 이 경우를 `given-when-then`으로 알아보자.
 
 ### given
 
@@ -555,7 +566,7 @@ class BorrowTest {
 
 ### given
 
-`BORROWING` 상태의 `Borrow` 객체를 생성하고 만료시간을 현재보다 하루 전으로 설정한다.
+`BORROWING` 상태의 `Borrow` 객체를 생성하고 `ExpiredAt`을 현재보다 하루 전으로 설정한다.
 
 ### when
 
@@ -579,6 +590,7 @@ class BorrowTest {
    테스트할 부분은 N+1 문제를 해결하기 위해 집적 QueryDSL을 작성한 부분이다.
    
 2. 리포지터리의 경우 실제 데이터가 생성되었는지 삭제되었는지 확인할 필요가 있다. 따라서 테스트용 디비 환경 구축을 할 필요가 있다.
+   물론 실제 디비 환경에서 테스트할 수도 있다.
 
 
 먼저 환경 구축부터 해보자.
@@ -663,9 +675,9 @@ public class BorrowRepositoryImpl implements BorrowRepositoryCustom {
 테스트 코드는 다음과 같다.
 
 ```java
-@ExtendWith(SpringExtension.class)
+@ExtendWith(SpringExtension.class) // junit5에서 @DataJpaTest랑 같이 사용하기 위해 필요
 @DataJpaTest // JPA와 관련된 객체들만 로딩, 테스트가 끝나면 자동으로 롤백
-@Import(TestConfig.class) // QueryDSL 사용에 필요한 빈을 생성하기 위해서 Configuration import
+@Import(TestConfig.class) // QueryDSL 사용에 필요한 빈을 사용하기 위해, 테스트용 Configuration import
 @ActiveProfiles("test") // test db 환경인 H2를 사용하기 위한 것
 class BorrowRepositoryTest {
    @Autowired
@@ -680,9 +692,12 @@ class BorrowRepositoryTest {
       //given
 
       //when
-      List<BorrowBookResponse> borrowBookList1 = borrowRepository.findBorrowbookAllByState(BorrowState.BORROWING);
-      List<BorrowBookResponse> borrowBookList2 = borrowRepository.findBorrowbookAllByState(BorrowState.EXPIRED);
-      List<BorrowBookResponse> borrowBookList3 = borrowRepository.findBorrowbookAllByState(BorrowState.RETURNED);
+      List<BorrowBookResponse> borrowBookList1 = borrowRepository
+              .findBorrowbookAllByState(BorrowState.BORROWING);
+      List<BorrowBookResponse> borrowBookList2 = borrowRepository
+              .findBorrowbookAllByState(BorrowState.EXPIRED);
+      List<BorrowBookResponse> borrowBookList3 = borrowRepository
+              .findBorrowbookAllByState(BorrowState.RETURNED);
 
       //then
       assertEquals(borrowBookList1.size(), 2);
@@ -720,19 +735,28 @@ class BorrowRepositoryTest {
    // Borrow 데이터
    public List<Borrow> borrowList(List<Book> books) { 
       return List.of(
-              Borrow.builder().bookId(books.get(0).getBook_id()).state(BorrowState.BORROWING).createdAt(LocalDate.now())
+              // BORROWING 객체 2개
+              Borrow.builder().bookId(books.get(0).getBook_id())
+                      .state(BorrowState.BORROWING).createdAt(LocalDate.now())
                       .expiredAt(LocalDate.now().plusDays(7)).borrower(new Borrower(1L, "hong")).build(),
-              Borrow.builder().bookId(books.get(1).getBook_id()).state(BorrowState.BORROWING).createdAt(LocalDate.now())
+              Borrow.builder().bookId(books.get(1).getBook_id())
+                      .state(BorrowState.BORROWING).createdAt(LocalDate.now())
                       .expiredAt(LocalDate.now().plusDays(7)).borrower(new Borrower(1L, "hong")).build(),
 
-              Borrow.builder().bookId(books.get(2).getBook_id()).state(BorrowState.EXPIRED).createdAt(LocalDate.now())
+              // EXPIRED 객체 2개
+              Borrow.builder().bookId(books.get(2).getBook_id())
+                      .state(BorrowState.EXPIRED).createdAt(LocalDate.now())
                       .expiredAt(LocalDate.now().plusDays(7)).borrower(new Borrower(1L, "hong")).build(),
-              Borrow.builder().bookId(books.get(3).getBook_id()).state(BorrowState.EXPIRED).createdAt(LocalDate.now())
+              Borrow.builder().bookId(books.get(3).getBook_id())
+                      .state(BorrowState.EXPIRED).createdAt(LocalDate.now())
                       .expiredAt(LocalDate.now().plusDays(7)).borrower(new Borrower(2L, "kim")).build(),
 
-              Borrow.builder().bookId(books.get(4).getBook_id()).state(BorrowState.RETURNED).createdAt(LocalDate.now())
+              // RETURNED 객체 2개
+              Borrow.builder().bookId(books.get(4).getBook_id())
+                      .state(BorrowState.RETURNED).createdAt(LocalDate.now())
                       .expiredAt(LocalDate.now().plusDays(7)).borrower(new Borrower(2L, "kim")).build(),
-              Borrow.builder().bookId(books.get(5).getBook_id()).state(BorrowState.RETURNED).createdAt(LocalDate.now())
+              Borrow.builder().bookId(books.get(5).getBook_id())
+                      .state(BorrowState.RETURNED).createdAt(LocalDate.now())
                       .expiredAt(LocalDate.now().plusDays(7)).borrower(new Borrower(2L, "kim")).build()
       );
    }
@@ -741,9 +765,10 @@ class BorrowRepositoryTest {
 
 조금 복잡해보이지만 차근 차근 알아보자.
 
-먼저 다른 테스트 함수들에서도 Book 객체들와 Borrow 객체들을 사용하므로 따로 공통 메서드로 만들어 두었다.
+먼저 다른 테스트 함수들에서도 Book 객체들와 Borrow 객체들을 사용하므로
+`borrowList()`와 `bookList()`로 공통 메서드로 만들어 두었다.
 
-그리고 테스트를 하기 전 데이터를 넣어넣고, 테스트가 수행하고 나서 데이터를 삭제하였다.
+그리고 테스트를 하기 전 `setUp()`을 통해 데이터를 넣어넣고, 테스트가 수행하고 나서 `tearDown()`을 통해 데이터를 삭제하였다.
 이는 `FIRST`의 `Independent`를 만족할 수 있다.
 
 이제 given - when - then을 살펴보자.
