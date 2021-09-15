@@ -1,7 +1,7 @@
 ---
 layout : post
 title : "테스트 커버리지 100% 향해서"
-image : assets/img/test-coverage/test-coverage-100.png
+image : assets/img/test-coverage/branch-100.png
 ---
 
 # 도입
@@ -24,7 +24,7 @@ image : assets/img/test-coverage/test-coverage-100.png
 
 API의 반환타입이 바뀌거나 하면 또 매번 해줘야하며, session을 통해 구축하는 거면 로그인까지 해줘야하는 문제점이 있었다.
 
-따라서 학교 프로젝트의 서버에 test code를 추가하여 `LINE` 기준으로 `100%` 달성하려고 한다.
+따라서 학교 프로젝트의 서버에 test code를 추가하여 `BRANCH` 기준으로 `100%` 달성하였다.
 
 이는 추후 몇가지 기능을 더 추가할 때 매우 큰 도움이 될 것이다.
 
@@ -791,11 +791,11 @@ class BorrowRepositoryTest {
 
 테스트를 작성해야한다는 생각은 있었으나 얼마만큼 테스트를 해야하고, 어떻게 시작해야할지 고민이 많았었다.
 
-테스트 커버리지라는 내용을 알고 나서 라인 커버리지를 100% 달성하자라는 목표로 하다보니 테스트가 즐거워진 것 같다.
+테스트 커버리지라는 내용을 알고 나서 커버리지를 100% 달성하자라는 목표로 하다보니 테스트가 즐거워진 것 같다.
 
-현재는 borrow 패키지만 100% 달성하였으나, 조금씩 시간을 투자하여 모두 100%를 달성할 수 있도록 해야겠다.
+원래는 라인 커버리지 100%를 목표로 하였으나, 조금 더 나아가 Branch 100%를 달성하는 데 성공하였다.
 
-![](../assets/img/test-coverage/test-coverage-100.png)
+![](../assets/img/test-coverage/branch-100.png)
 
 # 참조
 
