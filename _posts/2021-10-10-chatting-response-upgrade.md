@@ -265,7 +265,7 @@ receipt-id:77
 
 ![](../assets/img/message/subscribe-plan.png)
 
-6DISCONNECT
+6) DISCONNECT
 
 ![](../assets/img/message/stomp-disconnect-plan.png)
 
