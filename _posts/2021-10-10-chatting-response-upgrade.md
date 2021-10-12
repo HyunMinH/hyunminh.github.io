@@ -1,7 +1,7 @@
 ---
 layout : post
 title : "메시지 서비스 개선 1"
-image : assets/img/
+image : assets/img/message/test-plan.png
 ---
 
 # 도입
