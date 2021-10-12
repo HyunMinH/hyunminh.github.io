@@ -50,7 +50,7 @@ image : assets/img/message/test-plan.png
 ![](../assets/img/message/relaybroker-architecture.png)
 
 하지만 그림에서 보시다시피, 메시지가 오고 갈 때 데이터베이스에 저장하고 (`@Transactional`)
-오프라인 유저를 찾아 fcm server을 통해 알림을 전송한다. 
+오프라인 유저를 찾아 `fcm server`를 통해 알림을 전송한다. 
 이 부분들은 블로킹이 되는 부분이다.
 
 특히 `fcm` 부분은 단체 채팅방에서 매우 나쁜 성능을 보인다.
@@ -77,10 +77,10 @@ image : assets/img/message/test-plan.png
 
 또한 앞에 `nginx`를 둔 이유는 트래픽을 조절할 수 있다는 점이다. 
 
-스프링에서 많은 수의 요청이 도달하면, 기본 지정해놓은 쓰레드 갯수 200개가 넘어가면 큐에 쌓이게 되고 
-이는 heap 메모리가 넘쳐 오류가 발생할 것이다.
+스프링에서 많은 수의 요청이 도달하면 기본 지정해놓은 쓰레드 갯수 200개보다 많아 큐에 계속 쌓이게 되는데,
+너무 많이 큐에 요청이 쌓이면 heap 메모리가 넘쳐 오류가 발생할 것이다.
 
-nginx에서 일정 수의 커넥션만 유지하고, 이후 요청을 무시한다면 현재 접속중인 유저에게 더 안정적인 서비스를 제공할 수 있을 것이다.
+`nginx`에서 일정 수의 커넥션만 유지하고, 이후 요청을 무시한다면 현재 접속중인 유저에게 더 안정적인 서비스를 제공할 수 있을 것이다.
 
 이제 구현 및 성능 측정을 위해 `Stomp Frame` 형태, 측정 툴인 `jmeter`, `nginx` 적용 및 성능 측정 및 옵션 설정을 해보자.
 
@@ -100,10 +100,10 @@ Body^@
 
 * COMMAND : 메시지 액션(타입)을 정한다.
 
-* header : `header1:value` 형태이며, 다음 header로 넘어갈 때 줄바꿈으로 구분한다.(\n)
+* header : `header1:value` 형태이며, 다음 `header`로 넘어갈 때 줄바꿈으로 구분한다.(`\n`)
 
-* Body : body 시작전 \n을 넣어줘야하며, body 끝나는 지점에 null byte(0x00)을 넣어줘야한다. 
-  * 문서에서는 보기 편하게 null byte를 ^@로 표시한다고 한다.
+* Body : body 시작전 `\n`을 넣어줘야하며, body 끝나는 지점에 null byte(`0x00`)을 넣어줘야한다. 
+  * 문서에서는 보기 편하게 null byte를 `^@`로 표시한다고 한다.
 
 * utf-8 로 인코딩된다고 한다
 
@@ -125,9 +125,9 @@ host:stomp.github.org
 
 * host : 클라이언트가 연결하려는 가상 호스트의 이름
 
-* login : secured Stomp Server와 연결하기 위한 사용자의 id
+* login : Secured Stomp Server와 연결하기 위한 사용자의 id
 
-* passcode : secured Stomp Server와 연결하기 위한 사용자의 비밀번호
+* passcode : Secured Stomp Server와 연결하기 위한 사용자의 비밀번호
 
 * heart-beat : heart beat 세팅
   
@@ -163,7 +163,7 @@ version:1.2
 
 `SEND`, `SUBSCRIBE`, `UNSUBSCRIBE`, `DISCONNECT`를 쓸 예정이므로 이를 알아보자.
 
-> Stomp Protocol이 transcation을 지원하기 위해 BEGIN, COMMIT, ABORT 명령어를 지원한다.
+> Stomp Protocol은  transcation을 지원하기 위해 BEGIN, COMMIT, ABORT 명령어를 지원한다.
 
 ## SEND Frame
 
@@ -249,27 +249,27 @@ receipt-id:77
 
 먼저 할 테스트는 `nginx`로 몇명을 수용할 수 있는지 테스트하기 위해서 다음의 과정으로 실험한다.
 
-1.websocket 연결
+1) websocket 연결
 
 ![](../assets/img/message/ws-connect1.png)
-
-2. CONNECT
+ 
+2) CONNECT
 
 ![](../assets/img/message/stomp-connect-plan.png)
 
-3. websocket 으로 response 읽어오기
+3,4) websocket 으로 response 읽어오기
 
 ![](../assets/img/message/read-plan.png)
 
-4. SUBSCRIBE
+5) SUBSCRIBE
 
 ![](../assets/img/message/subscribe-plan.png)
 
-5. DISCONNECT
+6DISCONNECT
 
 ![](../assets/img/message/stomp-disconnect-plan.png)
 
-6. websocket close
+7) websocket close
 
 ![](../assets/img/message/ws-disconnect-plan.png)
 
@@ -436,19 +436,16 @@ receipt-id:77
 현재 AWS의 프리티어를 사용하고 있으니, 어쩔 수 없는 아쉬움이 든다.
 
 그래도 2000명의 사람은 충분히 수용할 수 있다는 것을 알았으니, 
-2000명으로 트래픽을 제한할 수 있는 nginx 설정을 했다는 점에서 만족해야겠다.
+2000명으로 트래픽을 제한할 수 있는 `nginx` 설정을 했다는 점에서 만족해야겠다.
 
-다음 포스팅에서는 나머지 1개의 인스턴스에 FCM 푸시 알림과 데이터베이스에 저장하는 기능을 분리한 서버를 두고, `rabbitmq`를 설정하고
-이를 설정하지 않았을 때와 `SEND`를 통해 성능 테스트를 해보려고 한다.
+다음 포스팅에서는 나머지 1개의 인스턴스에 `FCM` 푸시 알림과 데이터베이스에 저장하는 기능을 분리하고 `rabbitmq`를 설정한 후,
+이를 설정하지 않았을 때와 Stomp의 `SEND`를 통해 성능 테스트를 해보려고 한다.
 
 이후에 가능하다면, 동시 접속자 수를 늘려보려고 한다.
 
-https://tech.kakao.com/2020/06/22/websocket-part3/ 를 보니 `SimpleBroker`를 사용할 경우,
+[실시간 댓글 개발기(part.3) – Spring의 동시성 접근 제어에 발목 잡힌 이야기](https://tech.kakao.com/2020/06/22/websocket-part3/) 를 보니 `SimpleBroker`를 사용할 경우,
 사용자 수가 많아질수록 구독 정보를 가져오는 Cache 에서 Block 현상이 심하게 나타나는 거 같다.
 
-카카오 블로그에서 적용한 방식을 사용하면 아무래도 블락되는 현상이 줄어들어 큐에서 대기하는 시간이 줄어들 것으로 예상된다.
+카카오 블로그에서 적용한 방식을 사용하면 아무래도 블락되는 현상이 줄어들어 전체적으로 큐에서 대기하는 시간이 줄어들 것으로 예상된다.
 
 이 방법을 적용하거나, 아니면 외부 브로커(`RabbitMQ`)를 사용하는 방법 둘 다 고려해보아야겠다.
-
-
-
