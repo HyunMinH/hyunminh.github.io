@@ -9,7 +9,7 @@ image : assets/img/separate/final-architecture1.png
 저번 포스팅에서는 메시지 서비스의 부하 테스트를 위해 `Stomp Frame`의 형태와
 `jmeter`를 이용한 테스트 방법을 알아보고, `nginx`를 적용할 때와 안 할때를 나누어 측정하였다.
 
-이번에는 블로킹되는 부분인 `fcm` 기능과 데이터베이스 기능을 다른 서버로 분리한 후,
+이번에는 블로킹되는 부분인 `fcm` 기능과 `데이터베이스 저장/조회`를 다른 서버로 분리한 후,
 `rabbitmq`를 통해 전달하는 리팩토링을 거치려고 한다.
 
 아래는 새로 구축하려는 아키텍처이다.
@@ -23,7 +23,7 @@ image : assets/img/separate/final-architecture1.png
 
 # jmeter setup
 
-> 저번과 크게 달라진 점은, SEND와 UNSUBSCRIBE가 들어간 것이다.
+> 저번과 크게 달라진 점은 SEND와 UNSUBSCRIBE가 들어간 것이다.
 
 > 테스트하려는 방에는 6명의 인원이 있으며, 그 중 1명이 전송하도록 플랜을 구성했다.
 
@@ -74,7 +74,7 @@ image : assets/img/separate/final-architecture1.png
 
 실제로는 유저가 앱에 접속해 있는 동안 `SUBSCRIBE` 상태를 유지하고, 
 `UNSUBSCRIBE` 되기 전까지 메시지를 기다리고 받고 하기 때문에,
-이 문제에 대해서는 크게 걱정할 필요가 없을 것 같다.
+느리게 받을 수는 있기 때문에 이 문제에 대해 크게 걱정할 필요가 없을 것 같다.
 
 ### Close Error
 
@@ -88,12 +88,10 @@ image : assets/img/separate/final-architecture1.png
 좀 더 검색해보니 `jmeter`의 경우 버퍼에 쌓인 데이터를 읽지 않고 `CLOSE`를 하면 이런 문제가 발생한다고 한다.
 마침 공식 오픈소스를 찾아서 코드를 분석해볼 수 있었다. [JMeter WebSocket Samplers](https://bitbucket.org/pjtr/jmeter-websocket-samplers/src/master/)
 
-아래는 `WebsocketSampler`가 생성되면서 수행되는 코드이다. 
+아래는 `WebsocketSampler`가 생성되면서 수행되는 코드이다.
+우리가 살펴볼 `CloseWebsocketSampler`는 이 `WebSocketSampler`를 상속한다.
 
 ![](../assets/img/separate/WebsocketHandler-sample.png)
-
-`WebsocketSampler`는 부모 클래스로써, 다른 `WebsocketSampler`들은 이를 상속한다.
-우리가 살펴볼 `CloseWebsocketSampler`도 마찬가지이다.
 
 `doSample` 함수를 호출하는데 이 함수는 추상 메서드로 하위 클래스에서 구현해서 작성할 수 있다.
 즉, 템플릿 메서드 패턴인 것이다.
@@ -107,7 +105,7 @@ image : assets/img/separate/final-architecture1.png
 ![](../assets/img/separate/CloseWebsocketHnadler-doSample.png)
 
 서버한테 `CLOSE` 프레임을 전송한 후, 서버로부터 응답을 받는다. 이 응답이 바로 `receivedFrame`이다.
-그런데, 이 프레임이 `CLOSE` 프레임이 아니라 다른 프레임이면(우리 상황에서는 메시지) `UnexpectedFrameException`을 던지게 된다.
+그런데, 이 프레임이 `CLOSE` 프레임이 아니라 다른 프레임이면(우리 상황에서는 메시지 프레임) `UnexpectedFrameException`을 던지게 된다.
 
 그러면 `handleUnexpectedFrameException` 함수를 호출하게 되는데, 이 함수도 오버라이드 되어 있다. 살펴보자.
 
@@ -120,9 +118,9 @@ image : assets/img/separate/final-architecture1.png
 
 ![](../assets/img/separate/func-open.png)
 
-여기서 `okHttpClient`에서 웹소켓을 만들어 사용한다.
+`okHttpClient`에서 웹소켓을 만들어 사용한다.
 
-이 때 만들어지는 `websocket`은 아래 `loopReader()`의 루프를 계속돌면서 
+이 때 만들어지는 웹소켓은 아래 `loopReader()`의 루프를 계속돌면서 
 `reader.processNextFrame()`를 호출한다.
 
 ![](../assets/img/separate/func-loopReader.png)
@@ -162,32 +160,34 @@ image : assets/img/separate/final-architecture1.png
 확실히 속도가 느림을 알 수 있다. 
 또한, 데이터 유실도 많았다. 
 하나의 채팅을 전송할 때마다 데이터베이스에 직접 저장하다보니
-실제 데이터보다 적은양이 데이터베이스에 저장되었다.
+실제보다 적은양이 데이터베이스에 저장되었다.
+
+
+아래는 1000명까지 테스트하고 난 결과인데, 디비에 468개의 메시지만 저장되있었다.
 
 ![](../assets/img/separate/db.png)
 
-1000명까지 테스트 했을 때, 실제로는 468개의 메시지만 저장되있었다.
 
-rabbitmq를 이용하면, 속도 뿐만 아니라 데이터 유실이 적어질 것으로 기대된다.
+`rabbitmq`를 이용하면, 속도 뿐만 아니라 데이터 유실이 적어질 것으로 기대된다.
 
 # 기능 분리 한 후 테스트
 
-기존에 있던 데이터베이스에 저장과 `fcm` 푸시 알림을 다른 새로운 서버로 분리하였다.
+기존에 있던 `데이터베이스에 저장`과 `fcm` 푸시 알림을 다른 새로운 서버로 분리하였다.
 
 하지만, 하나 생각치 못했던 부분이 있었다. 
 유저에게 메시지를 전송할 때 보내는 `MessageDto`를 만들 때, 
-유저의 정보와 방의 정보를 담아 보내기 때문에 데이터베이스 조회를 한다는 점이다.
+유저의 정보와 방의 정보를 담아 보내기 때문에 `데이터베이스 조회`를 한다는 점이다.
 
 `JPA`를 사용하므로 기본적으로 캐싱이 되어 이전보다는 훨씬 속도가 좋아질 것으로 기대되지만,
-그래도 데이터베이스 조회를 없애는 것까지 추가 진행하려 한다.
+그래도 `데이터베이스 조회`를 없애는 것까지 추가 진행하려 한다.
 
 일단은 먼저 이대로 테스트 해보자.
 
-아래는 `rabbitmq`의 컨슈머의 로그로써 메시지를 디비에 저장하고, `fcm` 푸시 알림을 한다.
+아래는 1명을 테스트한 후, `rabbitmq` 컨슈머의 로그다. 
 
 ![](../assets/img/separate/sep-success.png)
 
-`fcm`까지 잘 보내는 것을 확인할 수 있다.
+메시지를 `디비에 저장`하고, `fcm` 푸시 알림이 잘 보내진 것을 확인할 수 있다.
 
 
 ## 30명
@@ -197,7 +197,7 @@ rabbitmq를 이용하면, 속도 뿐만 아니라 데이터 유실이 적어질 
 30명일 때는 매우 극적인 변화이다. 평균 시간은 279ms -> 56ms, 에러율은 1.67% -> 5.67%로 바뀌었다. 
 
 에러율이 증가하였는데, 아무래도 하나의 작업이 db 쓰기와 `fcm`이 제외되면서 매우 빠르게 메시지가 오고 가기 때문에,
-버퍼에 메시지가 차는 속도가 더 빨라져서 그런것으로 보인다.
+버퍼에 메시지가 차는 속도가 더 빨라져서 `Websocket Close` 에러가 늘어난 것으로 보인다.
 
 ## 100명 
 
@@ -218,7 +218,7 @@ rabbitmq를 이용하면, 속도 뿐만 아니라 데이터 유실이 적어질 
 평균 시간이 2071ms -> 1274ms, 에러율은 35.49% -> 34.42% 로 변화하였다.
 2000명으로 되면서 확실히 에러 발생율이 증가하였다. 
 
-데이터베이스에서 조회하는 기능까지 분리해서 비교해보자.
+`데이터베이스에서 조회`하는 기능까지 분리해서 비교해보자.
 
 # 데이터베이스 조회까지 제외 
 
@@ -272,16 +272,17 @@ rabbitmq를 이용하면, 속도 뿐만 아니라 데이터 유실이 적어질 
 ## 배경
 
 `SEND`를 하거나 `SUBSCRIBE` 등을 하기 위해서는 세션에 대한 구독정보가 필요하다. 
+
 이 때, `DefaultSubscriptionRegistry`에 있는 정보를 이용하거나 저장한다.
 이 레지스터리는 `Map<SessionId, Map<SubscribeId, Destination>>` 형태로 모든 유저의 구독 정보를 관리하고 있다.
 
-`SEND`를 하거나 할 때 사용자가 보낸 목적지인 `Destination`을 구독한 모든 유저(`SessionId`)를 찾아야한다.
+`SEND`와 `SUBSCRIBE` 등을 할 때, 사용자가 보내는 목적지인 `Destination`을 구독한 모든 유저(`SessionId`)를 찾아야한다.
 그런데 이 작업을 `DefaultSubscriptionRegistry`의 자료구조를 이용하면 2중 for문을 돌면서 모두 찾아야한다.
 
 그 이유는 `Destination`을 기준으로 찾아야하는데, 해당 자료구조는 `SessionId`가 키로 되어 있으며 
 그 value인 map도 `SubscribeId`가 key이기 때문이다.
 
-그래서 `DefulatSubscriptionRegisty`는 `DestinationCache`을 이용해 캐싱한다.
+그래서 `DefulatSubscriptionRegisty`는 `DestinationCache`을 이용한다.
 `DestinationCache`는 `Destination`을 키로 하는 `Map<Destination Map<SessionId, SubscribeId>>`로 정보를 관리한다.
 
 여기까지가 배경이다. 이제 문제가 되는 부분을 알아보자
@@ -326,10 +327,11 @@ rabbitmq를 이용하면, 속도 뿐만 아니라 데이터 유실이 적어질 
 
 ![](../assets/img/separate/func-getSubscription.png)
 
-첫번째 빨간 사각형에서 보면 캐시에서 못가져오면, 레지스터리에서 가져오고 캐시에 추가하는 작업을 한다.
+첫번째 빨간 사각형을 보자.
+정보를 캐시에서 못가져오면, 레지스터리에서 가져오고 캐시에 추가하는 작업을 한다는 것을 알 수 있다.
 
 그 작업 중 하나인 `computeMatchingSubscriptions`는 레지스터리에서 정보를 가져오는 작업인데,
-여기서도 `subscription.isPattern()`으로 패턴인지 확인하는데 아니면 `equals`로 비교한다.
+여기서도 `subscription.isPattern()`으로 패턴인지 확인하고, 아니면 `equals`로 비교한다.
 
 > 즉, 구독과 메시지 전송 시 언제나 패턴을 사용하지 않는다는 점이다. 
 
@@ -339,7 +341,7 @@ rabbitmq를 이용하면, 속도 뿐만 아니라 데이터 유실이 적어질 
 그런데 현재 라이브러리는 이 둘을 하나로 합쳐서 `destinationCache` 하나로 사용한다.
 
 그리고 `updateCache`는 `LinkedHashMap` 여서 `updateCache`에 `synchronized`를 걸어줬는데,
-`destinationCache`는 `ConcurrentHashMap`여서 따로 `synchronized`는 레지스터리 내에 없다.
+`destinationCache`는 `ConcurrentHashMap`여서 따로 `synchronized`가 레지스터리 코드 내에 없다.
 
 > 왜 이런 구조로 바뀌게 되었는지는 조금 더 공부를 해봐야 할 것 같다.
 
